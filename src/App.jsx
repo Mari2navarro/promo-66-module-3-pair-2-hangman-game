@@ -1,32 +1,35 @@
-import "./styles/App.scss";
-import { useState } from "react";
+import './styles/App.scss';
+import { useState } from 'react';
 
 function App() {
+  const [word, setWord] = useState('');
+  const [splitedWord, setSplitedWord] = useState([]);
+  const [lastLetter, setLastLetter] = useState('');
+  const [failedLetters, setFailedLetters] = useState('');
+  const [numberOfErrors, setNumberOfErrors] = useState(0);
 
-const [word, setWord] = useState ("");
-const [splitedWord, setSplitedWord] = useState ([]);
-const [lastLetter, setLastLetter] = useState ("");
-const [failedLetters, setFailedLetters] = useState ("");
-const [numberOfErrors, setNumberOfErrors] = useState (0);
-
-
-function handleClickErrors () {
-  if (numberOfErrors <= 12) {
-    setNumberOfErrors (numberOfErrors + 1)
+  function handleClickErrors() {
+    if (numberOfErrors <= 12) {
+      setNumberOfErrors(numberOfErrors + 1);
+    } else {
+      return;
+    }
+    console.log(numberOfErrors);
   }
-  else {
-    return
-  }
-  console.log(numberOfErrors)
-}
 
-function handleLetterChange (ev) {
-  const typedLetter = ev.target.value;
-  ^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ ]+$
-}
+  function handleLetterChange(ev) {
+    const typedLetter = ev.target.value;
+
+    // Reemplaza cualquier cosa que NO dsea una letra o espacio por un string vacío
+    // ^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ ]+$
+    const filteredValue = typedLetter.replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]/g, '');
+
+    // Solo actualizamos el estado con el valor limpio
+    setLastLetter(filteredValue);
+  }
 
   return (
-     <div className="page">
+    <div className="page">
       <header>
         <h1 className="header__title">Juego del ahorcado</h1>
       </header>
@@ -58,8 +61,12 @@ function handleLetterChange (ev) {
             </ul>
           </div>
           <form className="form">
-            <label className="title" htmlFor="last-letter">Escribe una letra:</label>
-            <input value={lastLetter} onChange={handleLetterChange}
+            <label className="title" htmlFor="last-letter">
+              Escribe una letra:
+            </label>
+            <input
+              value={lastLetter}
+              onChange={handleLetterChange}
               autoComplete="off"
               className="form__input"
               maxLength="1"
@@ -68,6 +75,7 @@ function handleLetterChange (ev) {
               id="last-letter"
             />
           </form>
+          <p>{!lastLetter ? 'Escribe una letra permitida' : ''}</p>
         </section>
         <section className={`dummy error-${numberOfErrors}`}>
           <span className="error-13 eye"></span>
