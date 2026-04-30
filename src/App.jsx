@@ -1,6 +1,30 @@
 import "./styles/App.scss";
+import { useState } from "react";
 
 function App() {
+
+const [word, setWord] = useState ("");
+const [splitedWord, setSplitedWord] = useState ([]);
+const [lastLetter, setLastLetter] = useState ("");
+const [failedLetters, setFailedLetters] = useState ("");
+const [numberOfErrors, setNumberOfErrors] = useState (0);
+
+
+function handleClickErrors () {
+  if (numberOfErrors <= 12) {
+    setNumberOfErrors (numberOfErrors + 1)
+  }
+  else {
+    return
+  }
+  console.log(numberOfErrors)
+}
+
+function handleLetterChange (ev) {
+  const typedLetter = ev.target.value;
+  ^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ ]+$
+}
+
   return (
      <div className="page">
       <header>
@@ -35,7 +59,7 @@ function App() {
           </div>
           <form className="form">
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
-            <input
+            <input value={lastLetter} onChange={handleLetterChange}
               autoComplete="off"
               className="form__input"
               maxLength="1"
@@ -45,7 +69,7 @@ function App() {
             />
           </form>
         </section>
-        <section className="dummy error-5">
+        <section className={`dummy error-${numberOfErrors}`}>
           <span className="error-13 eye"></span>
           <span className="error-12 eye"></span>
           <span className="error-11 line"></span>
@@ -59,6 +83,7 @@ function App() {
           <span className="error-3 line"></span>
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
+          <button onClick={handleClickErrors}>Incrementar</button>
         </section>
       </main>
     </div>
